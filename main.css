@@ -4,7 +4,7 @@
 
 body {
     height: 100vh;
-    background-color: antiquewhite;
+    background-color: rgb(250, 235, 215);
 }
 
 
@@ -62,7 +62,7 @@ text-align: center;
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgb(26, 90, 90)
+    background-color: rgba(250, 235, 215, 0.7)
   }
 
   .modal-content {

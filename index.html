@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Spaceman</title>
     <link rel="stylesheet" href="/main.css" />
-    <script defer src="/main.js"></script>
+    <!-- <script src="/pokemon.js" type="module" defer></script> -->
+    <script src="/main.js" type="module" defer></script>
   </head>
   <body>
-    <h1>Spaceman</h1>
+    <h1>Who's that Pokemon!</h1>
     <div id="keyboard">
       <div class="letter">A</div>
       <div class="letter">B</div>
@@ -39,6 +40,10 @@
     </div>
     <div class="word-blanksContainer" id="wordBlanksContainer"></div>
     <div class="remaining-guesses" id="remaining-guesses"></div>
+    <form id="guessForm">
+        <input type="text" id="guessInput">
+        <button type="submit">Guess</button>
+    </form>
     <div class="modal" id="myModal" >
         <div class="modal-content">
           <span class="close">&times;</span>
