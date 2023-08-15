@@ -1,41 +1,67 @@
 import { pokemonArray } from "./pokemon.js";
-// let game;
 
+//wordblanks & letters & guess features & remaining guesses
 const wordBlanksContainer = document.querySelector("#wordBlanksContainer");
 const keyboardLetters = document.querySelectorAll("#keyboard .letter");
 const remainingGuessesEl = document.querySelector("#remaining-guesses");
 const guessForm = document.querySelector("#guessForm");
 const guessInput = document.querySelector("#guessInput");
 
-// Get the modal element
+// modal & images
 const modal = document.querySelector("#myModal");
-// Get the <span> element that closes the modal
 const closeBtn = document.querySelector(".close");
-// Get the <h2> element to display the message
 const modalMessage = document.querySelector("#modal-message");
-// Get the <p> element to display the random word
 const modalWord = document.querySelector("#modal-word");
-// Get the try again button
 const tryAgainButton = document.querySelector("#try-again-button");
 
 let words = pokemonArray;
-// [
-//   "Blastoise",
-//   "Snorlax",
-//   "Ninetales",
-//   "Squirtle",
-//   "Dragonite",
-//   "Eevee",
-//   "Bulbasaur",
-//   "Arcanine",
-//   "Charizard",
-//   "Gengar",
-// ];
 
 let randomWord;
 let randomLetters;
 let remainingGuesses;
 let gameOver;
+
+// Event listener for the close button in the modal
+closeBtn.addEventListener("click", hideModal);
+
+
+// Event listener for the try again button in the modal
+tryAgainButton.addEventListener("click", () => {
+  hideModal();
+  newGame();
+});
+
+document.addEventListener("keydown", function (event) {
+  if (gameOver == true && event.key === "Enter") {
+    event.preventDefault();
+    hideModal();
+    newGame();
+    gameOver = false;
+  }
+});
+
+// Event listener for the guess form submission
+guessForm.addEventListener("submit", function (event) {
+  event.preventDefault(); // Prevent form submission
+
+  const userGuess = guessInput.value.toUpperCase();
+
+  const isValidInput = /^[A-Za-z]+$/.test(userGuess);
+
+  if (!isValidInput) {
+    // If the input is not valid, display an error message to the user
+    alert("Please enter only letters from A to Z");
+    return; // Exit 
+  }
+
+  if (userGuess === randomWord.toUpperCase()) {
+    remainingGuessesEl.textContent = "Congratulations! You won!";
+    showModal("Congratulations!", randomWord);
+  } else {
+    remainingGuessesEl.textContent = "You lost! The word was: " + randomWord;
+    showModal("You Lost!", randomWord);
+  }
+});
 
 function newGame() {
   const pokemonNames = pokemonArray.map((obj) => obj.name);
@@ -44,7 +70,7 @@ function newGame() {
   console.log(randomWord);
   randomLetters = randomWord.split("");
   console.log(randomLetters);
-
+  
   remainingGuesses = 6;
   remainingGuessesEl.textContent = `Guesses Remaining: ${remainingGuesses}`;
 
@@ -62,12 +88,25 @@ function newGame() {
   }
 
   document.querySelectorAll(".letter").forEach((letter) => {
-    letter.addEventListener("click", handleLetterClick);
+    letter.addEventListener("click", letterClick);
   });
+
+  const randomPokemon = pokemonArray[randomIndex];
+  const hint = randomPokemon.hint;
+  const hintTextElement = document.getElementById("hintText");
+  hintTextElement.textContent = hint;
+
+  document.querySelectorAll(".letter").forEach((letter) => {
+    letter.addEventListener("click", letterClick);
+  });
+  guessForm.guessInput.value = "";
+
+
   guessForm.guessInput.value = "";
 }
 
-function handleLetterClick() {
+
+function letterClick() {
   let clickedLetter = this.textContent;
   let blanks = document.querySelectorAll(".word-blank");
 
@@ -86,7 +125,7 @@ function handleLetterClick() {
 
     if (checkWin()) {
       document.querySelectorAll(".letter").forEach((letter) => {
-        letter.removeEventListener("click", handleLetterClick);
+        letter.removeEventListener("click", letterClick);
       });
     }
   } else {
@@ -102,12 +141,12 @@ function incorrectGuess() {
   remainingGuessesEl.textContent = `Guesses Remaining: ${remainingGuesses}`;
   if (remainingGuesses === 0) {
     document.querySelectorAll(".letter").forEach((letter) => {
-      letter.removeEventListener("click", handleLetterClick);
+      letter.removeEventListener("click", letterClick);
     });
 
     remainingGuessesEl.textContent = "Game Over";
 
-    showModal("Almost had it!", randomWord);
+    showModal();
   }
 }
 
@@ -126,65 +165,45 @@ function checkWin() {
   return true;
 }
 
-// Event listener for the guess form submission
-guessForm.addEventListener("submit", function (event) {
-  event.preventDefault(); // Prevent form submission
-
-  const userGuess = guessInput.value.toUpperCase();
-
-  if (userGuess === randomWord.toUpperCase()) {
-    remainingGuessesEl.textContent = "Congratulations! You won!";
-    showModal("Congratulations!", randomWord);
-  } else {
-    remainingGuessesEl.textContent = "You lost! The word was: " + randomWord;
-    showModal("You Lost!", randomWord);
-  }
-});
 
 // Function to show the modal with the specified message and word
 function showModal(message, word) {
   gameOver = true;
   modalMessage.textContent = message;
+
+  const gameGif = document.getElementById("gameGif");
   if (message === "You Lost!") {
-    modalWord.textContent = `The Pokemon was ${word}, Better luck nex time!`;
+    modalWord.textContent = `The Pokemon was ${word}, Better luck next time!`;
+    gameGif.src =
+      "https://media.tenor.com/fKJxAaJdH48AAAAd/pokemon-ash-ketchum.gif";
   } else {
     modalWord.textContent = `The Pokemon was ${word}.`;
+    gameGif.src = "https://media.tenor.com/lAz1WcGbKukAAAAC/pokeball-catch.gif";
   }
   modal.style.display = "block";
 }
 
 // Function to hide the modal
 function hideModal() {
-  modal.style.display = "none";
+  closeBtn.addEventListener("click", function(){
+    modal.style.display = "none";
+
+  })
+
 }
 
-// Event listener for the try again button in the modal
-tryAgainButton.addEventListener("click", () => {
-  hideModal();
-  newGame();
-});
 
-document.addEventListener("keydown", function (event) {
-  if (gameOver == true && event.key === "Enter") {
-    event.preventDefault();
-    hideModal();
-    newGame();
-    gameOver = false;
-  }
-});
-
-console.log(randomWord);
-
-// Event listener for the close button in the modal
-closeBtn.addEventListener("click", hideModal);
 
 newGame();
+
 // pop up modal look prettier
 // change the cursor when hovering over each letter to indicate to the user its clickable
 //pokemon whos that pokemon hints, group same type of pokemon by type, ie water or fire...
 //try to make a keyboard
 //have team rocket popup when they lose
 //have the image of shaded pokemon like they did in the tv shows as a hint.
-// array of objects; name: "" type :
 
 // replace words array with the array object using the key for the name and the value for the hint
+
+//game does not reset when pressing "x" in the popup modal/ the guesses remaining still displays " you lost!, the word was:"
+// match the typed word 

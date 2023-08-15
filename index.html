@@ -40,15 +40,19 @@
     </div>
     <div class="word-blanksContainer" id="wordBlanksContainer"></div>
     <div class="remaining-guesses" id="remaining-guesses"></div>
+    <p id="hint">Hint: <span id="hintText"></span></p>
     <form id="guessForm">
-        <input type="text" id="guessInput">
-        <button type="submit">Guess</button>
+      <button type="submit">Guess The Pokemon</button>
+      <br>
+      <input type="text" id="guessInput">
     </form>
     <div class="modal" id="myModal" >
         <div class="modal-content">
           <span class="close">&times;</span>
           <h2 id="modal-message"></h2>
           <p id="modal-word"></p>
+          <img src="" alt="Catch em all gif" id="gameGif">
+          <br>
           <button id="try-again-button">Try Again</button>
         </div>
       </div>
