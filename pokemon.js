@@ -1,5 +1,6 @@
-export default [
 
+
+const pokemonArray = [
 {name: 'Bulbasaur', hint: 'Grass/Poison'},
 {name: 'Ivysaur', hint: 'Grass/Poison'},
 {name: 'Venusaur', hint: 'Grass/Poison'},
@@ -152,3 +153,6 @@ export default [
 {name: 'Mewtwo', hint: 'Psychic'},
 {name: 'Mew', hint: 'Psychic'}
 ]
+
+
+export { pokemonArray};
