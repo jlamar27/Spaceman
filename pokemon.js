@@ -122,7 +122,7 @@ const pokemonArray = [
 {name: 'Seaking', hint: 'Water'},
 {name: 'Staryu', hint: 'Water'},
 {name: 'Starmie', hint: 'Water/Psychic'},
-{name: 'Mr. Mime', hint: 'Psychic/Fairy'},
+{name: 'MrMime', hint: 'Psychic/Fairy'},
 {name: 'Scyther', hint: 'Bug/Flying'},
 {name: 'Jynx', hint: 'Ice/Psychic'},
 {name: 'Electabuzz', hint: 'Electric'},

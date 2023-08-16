@@ -23,6 +23,11 @@ text-align: center;
     max-width: 30%;
 }
 
+.letter:hover
+{
+  cursor: pointer;
+}
+
 .letter {
   display: flex;
   justify-content: center;
@@ -70,26 +75,48 @@ text-align: center;
   }
 
   .modal-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
     background-color: #fefefe;
     margin: 15% auto;
     padding: 20px;
     border: 5px solid #888;
-    height: 65%;
-    width: 60%;
+    max-height: 65%;
+    max-width: 60%;
     align-items: center;
     justify-content: center;
     text-align: center;
   }
+
+  .modal-content img{
+    max-width: 100%;
+    max-height: 100%;
+  }
+
 
   .close {
     color: #aaa;
     float: right;
     font-size: 28px;
     font-weight: bold;
+    position:absolute;
+    top: 0;
+    right: 1%;
   }
+
+
 
   .close:hover,
   .close:focus {
     color: black;
     text-decoration: none;
     cursor: pointer;
+  }
+
+  @media (max-width:600px){
+    body{
+      max-width: fit-content;
+      max-height: fit-content;
+    }
+  }
