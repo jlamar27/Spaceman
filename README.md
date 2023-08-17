@@ -33,7 +33,7 @@ Welcome to the "Who's That Pokemon" game! Test your knowledge of Pokemon names b
 
    ```bash
    git clone https://github.com/your-username/whos-that-pokemon
-2. Open the `index.html` file in a web browser to start playing.
+2. [Play the game](https://jlamar27.github.io/Whos-that-Pokemon/)
 
 ## Game Logic
 
