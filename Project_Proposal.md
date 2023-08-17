@@ -21,7 +21,6 @@ img
 - As a player, I would want to pick my level of difficulty.
 - As a player, I woudld like to know what the guessed word was whenever I couldn't guess it.
 - As a player, I would like to be able to restart the game
-- As a player,
 
 #### Stretch Goals
 
