@@ -1,51 +1,44 @@
 import { pokemonArray } from "./pokemon.js";
 
-// Messages
-const GAME_OVER_MESSAGE = "Game Over";
-const CONGRATULATIONS_MESSAGE = "Congratulations! You won!";
-const YOU_LOST_MESSAGE = "You Lost!";
-const GUESSES_REMAINING_MESSAGE = "Guesses Remaining: ";
-const POKEMON_WAS_MESSAGE = "The Pokemon was ";
-const YOU_CAUGHT_MESSAGE = "You Caught ";
-const BETTER_LUCK_NEXT_TIME_MESSAGE = ", better luck next time!";
+const MESSAGES = {
+  GAME_OVER: "Game Over",
+  CONGRATULATIONS: "Congratulations! You won!",
+  YOU_LOST: "You Lost!",
+  GUESSES_REMAINING: "Guesses Remaining: ",
+  POKEMON_WAS: "The Pokemon was ",
+  YOU_CAUGHT: "You Caught ",
+  BETTER_LUCK_NEXT_TIME: ", better luck next time!"
+};
 
-// GIF URLs
-const LOST_GIF_URL = "https://media.tenor.com/fKJxAaJdH48AAAAd/pokemon-ash-ketchum.gif";
-const WON_GIF_URL = "https://media.tenor.com/lAz1WcGbKukAAAAC/pokeball-catch.gif";
+const GIF_URLS = {
+  LOST: "https://media.tenor.com/fKJxAaJdH48AAAAd/pokemon-ash-ketchum.gif",
+  WON: "https://media.tenor.com/lAz1WcGbKukAAAAC/pokeball-catch.gif"
+};
 
-// Elements
-const wordBlanksContainer = document.querySelector("#wordBlanksContainer");
-const keyboardLetters = document.querySelectorAll("#keyboard .letter");
-const remainingGuessesEl = document.querySelector("#remaining-guesses");
-const guessForm = document.querySelector("#guessForm");
-const guessInput = document.querySelector("#guessInput");
-const modal = document.querySelector("#myModal");
-const closeBtn = document.querySelector(".close");
-const modalMessage = document.querySelector("#modal-message");
-const modalWord = document.querySelector("#modal-word");
-const tryAgainButton = document.querySelector("#try-again-button");
-const difficultySelect = document.querySelector("#difficultySelect"); 
+const elements = {
+  wordBlanksContainer: document.querySelector("#wordBlanksContainer"),
+  keyboardLetters: document.querySelectorAll("#keyboard .letter"),
+  remainingGuessesEl: document.querySelector("#remaining-guesses"),
+  guessForm: document.querySelector("#guessForm"),
+  guessInput: document.querySelector("#guessInput"),
+  modal: document.querySelector("#myModal"),
+  closeBtn: document.querySelector(".close"),
+  modalMessage: document.querySelector("#modal-message"),
+  modalWord: document.querySelector("#modal-word"),
+  tryAgainButton: document.querySelector("#try-again-button"),
+  difficultySelect: document.querySelector("#difficultySelect"),
+  hintTextElement: document.getElementById("hintText")
+};
 
-// Game state
-let randomWord;
-let randomLetters;
-let remainingGuesses;
-let gameOver;
-let difficulty = 1; // Default difficulty level (1: Easy, 2: Medium, 3: Hard)
+let randomWord, randomLetters, remainingGuesses, difficulty = 1, gameOver;
 
-// Event listeners
-closeBtn.addEventListener("click", resetAndHideModal);
-tryAgainButton.addEventListener("click", resetAndHideModal);
-modal.addEventListener("keydown", (event) => {
-  if (event.key === "Enter") {
-    resetAndHideModal();
-  }
-});
-guessForm.addEventListener("submit", handleGuessSubmission);
-guessInput.addEventListener("keydown", handleEnterKey);
-difficultySelect.addEventListener("change", handleDifficultyChange);
+elements.closeBtn.addEventListener("click", resetAndHideModal);
+elements.tryAgainButton.addEventListener("click", resetAndHideModal);
+elements.modal.addEventListener("keydown", (event) => event.key === "Enter" && resetAndHideModal());
+elements.guessForm.addEventListener("submit", handleGuessSubmission);
+elements.guessInput.addEventListener("keydown", handleEnterKey);
+elements.difficultySelect.addEventListener("change", handleDifficultyChange);
 
-// Initialize the game
 newGame();
 
 function resetAndHideModal() {
@@ -55,7 +48,7 @@ function resetAndHideModal() {
 
 function handleGuessSubmission(event) {
   event.preventDefault();
-  const userGuess = guessInput.value.trim().toUpperCase();
+  const userGuess = elements.guessInput.value.trim().toUpperCase();
   const isValidInput = /^[A-Za-z]+$/.test(userGuess);
 
   if (!isValidInput) {
@@ -63,7 +56,7 @@ function handleGuessSubmission(event) {
     return;
   }
 
-  if (modal.style.display === "block") {
+  if (elements.modal.style.display === "block") {
     resetAndHideModal();
     return;
   }
@@ -74,10 +67,10 @@ function handleGuessSubmission(event) {
 function handleEnterKey(event) {
   if (event.key === "Enter") {
     event.preventDefault();
-    const userGuess = guessInput.value.trim().toUpperCase();
+    const userGuess = elements.guessInput.value.trim().toUpperCase();
     const isValidInput = /^[A-Za-z]+$/.test(userGuess);
 
-    if (modal.style.display === "block") {
+    if (elements.modal.style.display === "block") {
       resetAndHideModal();
       return;
     }
@@ -97,55 +90,47 @@ function newGame() {
   randomWord = pokemonNames[randomIndex].toUpperCase();
   randomLetters = randomWord.split("");
   setDifficulty();
-  remainingGuessesEl.textContent = `${GUESSES_REMAINING_MESSAGE}${remainingGuesses}`;
+  elements.remainingGuessesEl.textContent = `${MESSAGES.GUESSES_REMAINING}${remainingGuesses}`;
 
-  keyboardLetters.forEach(letterElement => {
+  elements.keyboardLetters.forEach(letterElement => {
     letterElement.style.pointerEvents = "auto";
     letterElement.style.opacity = 1;
   });
 
-  wordBlanksContainer.innerHTML = '';
-
-  for (let i = 0; i < randomLetters.length; i++) {
-    let blank = document.createElement("span");
+  elements.wordBlanksContainer.innerHTML = '';
+  randomLetters.forEach(() => {
+    const blank = document.createElement("span");
     blank.classList.add("word-blank");
-    blank.textContent = "";
-    wordBlanksContainer.appendChild(blank);
-  }
+    elements.wordBlanksContainer.appendChild(blank);
+  });
 
-  keyboardLetters.forEach(letter => {
+  elements.keyboardLetters.forEach(letter => {
     letter.addEventListener("click", letterClick);
   });
 
   const randomPokemon = pokemonArray[randomIndex];
-  const hint = randomPokemon.hint;
-  const hintTextElement = document.getElementById("hintText");
-  hintTextElement.textContent = hint;
+  elements.hintTextElement.textContent = randomPokemon.hint;
 
-  guessInput.value = "";
+  elements.guessInput.value = "";
 }
 
 function letterClick() {
   const clickedLetter = this.textContent;
   const blanks = document.querySelectorAll(".word-blank");
-
-  let found = false;
-
-  for (let i = 0; i < randomLetters.length; i++) {
-    if (randomLetters[i] === clickedLetter) {
+  const found = randomLetters.some((letter, i) => {
+    if (letter === clickedLetter) {
       blanks[i].textContent = clickedLetter;
-      found = true;
+      return true;
     }
-  }
+    return false;
+  });
 
   this.style.pointerEvents = "none";
   this.style.opacity = 0;
 
-  const allLettersGuessed = Array.from(blanks).every(blank => blank.textContent !== "");
+  const allLettersGuessed = [...blanks].every(blank => blank.textContent !== "");
   if (allLettersGuessed) {
-    keyboardLetters.forEach(letter => {
-      letter.removeEventListener("click", letterClick);
-    });
+    elements.keyboardLetters.forEach(letter => letter.removeEventListener("click", letterClick));
     checkWin(randomWord);
   } else if (!found) {
     incorrectGuess();
@@ -154,17 +139,14 @@ function letterClick() {
 
 function incorrectGuess() {
   remainingGuesses--;
-  remainingGuessesEl.textContent = `${GUESSES_REMAINING_MESSAGE}${remainingGuesses}`;
+  elements.remainingGuessesEl.textContent = `${MESSAGES.GUESSES_REMAINING}${remainingGuesses}`;
 
   if (remainingGuesses === 0) {
-    keyboardLetters.forEach(letter => {
-      letter.removeEventListener("click", letterClick);
-    });
+    elements.keyboardLetters.forEach(letter => letter.removeEventListener("click", letterClick));
+    elements.remainingGuessesEl.textContent = MESSAGES.GAME_OVER;
 
-    remainingGuessesEl.textContent = GAME_OVER_MESSAGE;
-
-    if (guessInput.value !== randomWord) {
-      showModal(YOU_LOST_MESSAGE, randomWord);
+    if (elements.guessInput.value !== randomWord) {
+      showModal(MESSAGES.YOU_LOST, randomWord);
       newGame();
     }
   }
@@ -176,32 +158,32 @@ function checkWin(userGuess) {
   const isUserGuessCorrect = userGuess === randomWord;
   const areAllLettersGuessed = randomLetters.every(letter => guessedLetterIds.includes(letter));
 
-  remainingGuessesEl.textContent = isUserGuessCorrect || areAllLettersGuessed ? CONGRATULATIONS_MESSAGE : GAME_OVER_MESSAGE;
+  elements.remainingGuessesEl.textContent = isUserGuessCorrect || areAllLettersGuessed ? MESSAGES.CONGRATULATIONS : MESSAGES.GAME_OVER;
 
   if (isUserGuessCorrect || areAllLettersGuessed) {
-    showModal(isUserGuessCorrect ? CONGRATULATIONS_MESSAGE : YOU_LOST_MESSAGE, randomWord);
+    showModal(isUserGuessCorrect ? MESSAGES.CONGRATULATIONS : MESSAGES.YOU_LOST, randomWord);
     return true;
   } else {
-    showModal(YOU_LOST_MESSAGE, randomWord);
+    showModal(MESSAGES.YOU_LOST, randomWord);
     return false;
   }
 }
 
 function showModal(message, word) {
   gameOver = true;
-  modalMessage.textContent = message;
-  modalWord.textContent = message === YOU_LOST_MESSAGE
-    ? `${POKEMON_WAS_MESSAGE}${word}${BETTER_LUCK_NEXT_TIME_MESSAGE}`
-    : `${CONGRATULATIONS_MESSAGE}${YOU_CAUGHT_MESSAGE}${word}`;
+  elements.modalMessage.textContent = message;
+  elements.modalWord.textContent = message === MESSAGES.YOU_LOST
+    ? `${MESSAGES.POKEMON_WAS}${word}${MESSAGES.BETTER_LUCK_NEXT_TIME}`
+    : `${MESSAGES.CONGRATULATIONS}${MESSAGES.YOU_CAUGHT}${word}`;
 
   const gameGif = document.getElementById("gameGif");
-  gameGif.src = message === YOU_LOST_MESSAGE ? LOST_GIF_URL : WON_GIF_URL;
+  gameGif.src = message === MESSAGES.YOU_LOST ? GIF_URLS.LOST : GIF_URLS.WON;
 
-  modal.style.display = "block";
+  elements.modal.style.display = "block";
 }
 
 function hideModal() {
-  modal.style.display = "none";
+  elements.modal.style.display = "none";
 }
 
 function setDifficulty() {
@@ -213,16 +195,16 @@ function setDifficulty() {
       remainingGuesses = 7;
       break;
     case 3:
-    remainingGuesses = 5;
-    break;
-  default:
-    remainingGuesses = 10;
-    break;
-}
+      remainingGuesses = 5;
+      break;
+    default:
+      remainingGuesses = 10;
+      break;
+  }
 
-remainingGuessesEl.textContent = `${GUESSES_REMAINING_MESSAGE}${remainingGuesses}`;
+  elements.remainingGuessesEl.textContent = `${MESSAGES.GUESSES_REMAINING}${remainingGuesses}`;
 }
 
 function handleDifficultyChange(event) {
-difficulty = parseInt(event.target)
+  difficulty = parseInt(event.target.value);
 }
