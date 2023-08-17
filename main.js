@@ -7,12 +7,12 @@ const MESSAGES = {
   GUESSES_REMAINING: "Guesses Remaining: ",
   POKEMON_WAS: "The Pokemon was ",
   YOU_CAUGHT: "You Caught ",
-  BETTER_LUCK_NEXT_TIME: ", better luck next time!"
+  BETTER_LUCK_NEXT_TIME: ", better luck next time!",
 };
 
 const GIF_URLS = {
   LOST: "https://media.tenor.com/fKJxAaJdH48AAAAd/pokemon-ash-ketchum.gif",
-  WON: "https://media.tenor.com/lAz1WcGbKukAAAAC/pokeball-catch.gif"
+  WON: "https://media.tenor.com/lAz1WcGbKukAAAAC/pokeball-catch.gif",
 };
 
 const elements = {
@@ -27,14 +27,21 @@ const elements = {
   modalWord: document.querySelector("#modal-word"),
   tryAgainButton: document.querySelector("#try-again-button"),
   difficultySelect: document.querySelector("#difficultySelect"),
-  hintTextElement: document.getElementById("hintText")
+  hintTextElement: document.getElementById("hintText"),
 };
 
-let randomWord, randomLetters, remainingGuesses, difficulty = 1, gameOver;
+let randomWord,
+  randomLetters,
+  remainingGuesses,
+  difficulty = 1,
+  gameOver;
 
 elements.closeBtn.addEventListener("click", resetAndHideModal);
 elements.tryAgainButton.addEventListener("click", resetAndHideModal);
-elements.modal.addEventListener("keydown", (event) => event.key === "Enter" && resetAndHideModal());
+elements.modal.addEventListener(
+  "keydown",
+  (event) => event.key === "Enter" && resetAndHideModal()
+);
 elements.guessForm.addEventListener("submit", handleGuessSubmission);
 elements.guessInput.addEventListener("keydown", handleEnterKey);
 elements.difficultySelect.addEventListener("change", handleDifficultyChange);
@@ -85,26 +92,26 @@ function handleEnterKey(event) {
 }
 
 function newGame() {
-  const pokemonNames = pokemonArray.map(obj => obj.name);
+  const pokemonNames = pokemonArray.map((obj) => obj.name);
   const randomIndex = Math.floor(Math.random() * pokemonNames.length);
   randomWord = pokemonNames[randomIndex].toUpperCase();
   randomLetters = randomWord.split("");
   setDifficulty();
   elements.remainingGuessesEl.textContent = `${MESSAGES.GUESSES_REMAINING}${remainingGuesses}`;
 
-  elements.keyboardLetters.forEach(letterElement => {
+  elements.keyboardLetters.forEach((letterElement) => {
     letterElement.style.pointerEvents = "auto";
     letterElement.style.opacity = 1;
   });
 
-  elements.wordBlanksContainer.innerHTML = '';
+  elements.wordBlanksContainer.innerHTML = "";
   randomLetters.forEach(() => {
     const blank = document.createElement("span");
     blank.classList.add("word-blank");
     elements.wordBlanksContainer.appendChild(blank);
   });
 
-  elements.keyboardLetters.forEach(letter => {
+  elements.keyboardLetters.forEach((letter) => {
     letter.addEventListener("click", letterClick);
   });
 
@@ -117,22 +124,27 @@ function newGame() {
 function letterClick() {
   const clickedLetter = this.textContent;
   const blanks = document.querySelectorAll(".word-blank");
-  const found = randomLetters.some((letter, i) => {
+  const matchedIndices = [];
+
+  randomLetters.forEach((letter, i) => {
     if (letter === clickedLetter) {
       blanks[i].textContent = clickedLetter;
-      return true;
+      matchedIndices.push(i);
     }
-    return false;
   });
 
   this.style.pointerEvents = "none";
   this.style.opacity = 0;
 
-  const allLettersGuessed = [...blanks].every(blank => blank.textContent !== "");
+  const allLettersGuessed = [...blanks].every(
+    (blank) => blank.textContent !== ""
+  );
   if (allLettersGuessed) {
-    elements.keyboardLetters.forEach(letter => letter.removeEventListener("click", letterClick));
+    elements.keyboardLetters.forEach((letter) =>
+      letter.removeEventListener("click", letterClick)
+    );
     checkWin(randomWord);
-  } else if (!found) {
+  } else if (matchedIndices.length === 0) {
     incorrectGuess();
   }
 }
@@ -142,7 +154,9 @@ function incorrectGuess() {
   elements.remainingGuessesEl.textContent = `${MESSAGES.GUESSES_REMAINING}${remainingGuesses}`;
 
   if (remainingGuesses === 0) {
-    elements.keyboardLetters.forEach(letter => letter.removeEventListener("click", letterClick));
+    elements.keyboardLetters.forEach((letter) =>
+      letter.removeEventListener("click", letterClick)
+    );
     elements.remainingGuessesEl.textContent = MESSAGES.GAME_OVER;
 
     if (elements.guessInput.value !== randomWord) {
@@ -153,15 +167,25 @@ function incorrectGuess() {
 }
 
 function checkWin(userGuess) {
-  const guessedLetterIds = Array.from(document.querySelectorAll(".word-blank")).map(letter => letter.textContent);
+  const guessedLetterIds = Array.from(
+    document.querySelectorAll(".word-blank")
+  ).map((letter) => letter.textContent);
 
   const isUserGuessCorrect = userGuess === randomWord;
-  const areAllLettersGuessed = randomLetters.every(letter => guessedLetterIds.includes(letter));
+  const areAllLettersGuessed = randomLetters.every((letter) =>
+    guessedLetterIds.includes(letter)
+  );
 
-  elements.remainingGuessesEl.textContent = isUserGuessCorrect || areAllLettersGuessed ? MESSAGES.CONGRATULATIONS : MESSAGES.GAME_OVER;
+  elements.remainingGuessesEl.textContent =
+    isUserGuessCorrect || areAllLettersGuessed
+      ? MESSAGES.CONGRATULATIONS
+      : MESSAGES.GAME_OVER;
 
   if (isUserGuessCorrect || areAllLettersGuessed) {
-    showModal(isUserGuessCorrect ? MESSAGES.CONGRATULATIONS : MESSAGES.YOU_LOST, randomWord);
+    showModal(
+      isUserGuessCorrect ? MESSAGES.CONGRATULATIONS : MESSAGES.YOU_LOST,
+      randomWord
+    );
     return true;
   } else {
     showModal(MESSAGES.YOU_LOST, randomWord);
@@ -172,9 +196,10 @@ function checkWin(userGuess) {
 function showModal(message, word) {
   gameOver = true;
   elements.modalMessage.textContent = message;
-  elements.modalWord.textContent = message === MESSAGES.YOU_LOST
-    ? `${MESSAGES.POKEMON_WAS}${word}${MESSAGES.BETTER_LUCK_NEXT_TIME}`
-    : `${MESSAGES.CONGRATULATIONS}${MESSAGES.YOU_CAUGHT}${word}`;
+  elements.modalWord.textContent =
+    message === MESSAGES.YOU_LOST
+      ? `${MESSAGES.POKEMON_WAS}${word}${MESSAGES.BETTER_LUCK_NEXT_TIME}`
+      : `${MESSAGES.CONGRATULATIONS}${MESSAGES.YOU_CAUGHT}${word}`;
 
   const gameGif = document.getElementById("gameGif");
   gameGif.src = message === MESSAGES.YOU_LOST ? GIF_URLS.LOST : GIF_URLS.WON;
