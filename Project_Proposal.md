@@ -15,7 +15,7 @@ img
 
 img
 
-#### MvP goals
+#### MVP goals
 
 - As a player, I would want to be able to guess each individual letters and entired words.
 - As a player, I would want to pick my level of difficulty.

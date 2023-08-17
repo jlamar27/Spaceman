@@ -25,7 +25,6 @@ const modalMessage = document.querySelector("#modal-message");
 const modalWord = document.querySelector("#modal-word");
 const tryAgainButton = document.querySelector("#try-again-button");
 const difficultySelect = document.querySelector("#difficultySelect"); 
-const guessHistoryContainer = document.querySelector("#guessHistory");
 
 // Game state
 let randomWord;
@@ -52,7 +51,6 @@ newGame();
 function resetAndHideModal() {
   hideModal();
   newGame();
-  guessHistoryContainer.textContent = "";
 }
 
 function handleGuessSubmission(event) {
@@ -71,7 +69,6 @@ function handleGuessSubmission(event) {
   }
 
   checkWin(userGuess);
-  addToGuessHistory(userGuess);
 }
 
 function handleEnterKey(event) {
@@ -170,8 +167,6 @@ function incorrectGuess() {
       showModal(YOU_LOST_MESSAGE, randomWord);
       newGame();
     }
-
-    guessHistoryContainer.textContent = "";
   }
 }
 
@@ -229,12 +224,5 @@ remainingGuessesEl.textContent = `${GUESSES_REMAINING_MESSAGE}${remainingGuesses
 }
 
 function handleDifficultyChange(event) {
-difficulty = parseInt(event.target.value, 10);
-newGame();
-}
-
-function addToGuessHistory(letter) {
-const guessHistoryItem = document.createElement("span");
-guessHistoryItem.textContent = letter + " ";
-guessHistoryContainer.appendChild(guessHistoryItem);
+difficulty = parseInt(event.target)
 }
