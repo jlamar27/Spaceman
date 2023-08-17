@@ -187,3 +187,19 @@ body {
     max-width: 90%;
   }
 }
+
+.overlay {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 5px solid #888;
+  max-height: 65%;
+  max-width: 60%;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  top: -12%;
+}
