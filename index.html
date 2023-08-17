@@ -7,16 +7,23 @@
     <link rel="stylesheet" href="/main.css" />
     <script src="/pokemon.js" type="module" defer></script>
     <script src="/main.js" type="module" defer></script>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&family=Roboto+Slab&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <header>
       <h1>Who's That Pokemon</h1>
-      <label for="difficultySelect">Select Difficulty:</label>
-      <select id="difficultySelect">
-        <option value="1">Easy</option>
-        <option value="2">Medium</option>
-        <option value="3">Hard</option>
-      </select>
+      <section id="difficulty">
+        <label for="difficultySelect">Select Difficulty:</label>
+        <select id="difficultySelect">
+          <option value="1">Easy</option>
+          <option value="2">Medium</option>
+          <option value="3">Hard</option>
+        </select>
+      </section>
     </header>
 
     <main>
@@ -49,14 +56,16 @@
         <div class="letter">Z</div>
       </div>
 
-      <div class="word-blanksContainer" id="wordBlanksContainer"></div>
-      <div class="remaining-guesses" id="remaining-guesses"></div>
-      <p id="hint">Hint: <span id="hintText"></span></p>
-      <form id="guessForm">
-        <button type="submit">Guess The Pokemon</button>
-        <br />
-        <input type="text" id="guessInput" />
-      </form>
+      <section class="center">
+        <div class="word-blanksContainer" id="wordBlanksContainer"></div>
+        <div class="remaining-guesses" id="remaining-guesses"></div>
+        <p id="hint">Hint: <span id="hintText"></span></p>
+        <form id="guessForm">
+          <button type="submit">Guess The Pokemon</button>
+          <br />
+          <input type="text" id="guessInput" />
+        </form>
+      </section>
 
       <div class="modal" id="myModal">
         <div class="modal-content">
@@ -68,6 +77,7 @@
           <button id="try-again-button">Try Again</button>
         </div>
       </div>
+
     </main>
   </body>
 </html>
