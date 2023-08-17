@@ -6,6 +6,8 @@ Welcome to the "Who's That Pokemon" game! Test your knowledge of Pokemon names b
 
 ## Screenshots
 
+![Screenshot 1](/Game-img/Load%20Screen.png)
+![Screenshot 2](/Game-img/Win%20screens.png)
 
 ## Technologies Used 
 
