@@ -41,7 +41,7 @@ elements.tryAgainButton.addEventListener("click", resetAndHideModal);
 elements.modal.addEventListener(
   "keydown",
   (event) => event.key === "Enter" && resetAndHideModal()
-);
+  );
 elements.guessForm.addEventListener("submit", handleGuessSubmission);
 elements.guessInput.addEventListener("keydown", handleEnterKey);
 elements.difficultySelect.addEventListener("change", handleDifficultyChange);
@@ -119,12 +119,14 @@ function newGame() {
   elements.hintTextElement.textContent = randomPokemon.hint;
 
   elements.guessInput.value = "";
+  difficultySelect.disabled = false
 }
 
 function letterClick() {
   const clickedLetter = this.textContent;
   const blanks = document.querySelectorAll(".word-blank");
   const matchedIndices = [];
+  difficultySelect.disabled = true;
 
   randomLetters.forEach((letter, i) => {
     if (letter === clickedLetter) {
@@ -232,4 +234,5 @@ function setDifficulty() {
 
 function handleDifficultyChange(event) {
   difficulty = parseInt(event.target.value);
+  newGame()
 }
