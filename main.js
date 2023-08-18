@@ -139,8 +139,7 @@ function letterClick() {
   this.style.opacity = 0;
 
   const allLettersGuessed = [...blanks].every(
-    (blank) => blank.textContent !== ""
-  );
+    (blank) => blank.textContent !== "");
   if (allLettersGuessed) {
     elements.keyboardLetters.forEach((letter) =>
       letter.removeEventListener("click", letterClick)
